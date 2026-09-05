@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Presenter Dashboard — Somali Media CyberSafe</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="/socket.io/socket.io.js"></script>
+
+<style>
+.presenter-only {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 20px 40px;
+}
+
+.presenter-note {
+  margin: 18px 0;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #fff3cd;
+  border: 1px solid #f0d98c;
+  font-weight: 700;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <h1>📊 Somali Media CyberSafe — Presenter Dashboard</h1>
+    <p class="sub">
+      Private presenter view • Anonymous aggregate results only
+    </p>
+  </div>
+
+  <div class="forum">
+    Strategic Communication Forum 2026
+  </div>
+</header>
+
+<main class="container presenter-only">
+
+  <div class="presenter-note">
+    🎤 Presenter view — Participants do not see this dashboard.
+  </div>
+
+  <div class="dash-grid">
+
+    <div class="stat">
+      <h3>Participants Connected</h3>
+      <div class="big" id="participants">0</div>
+    </div>
+
+    <div class="stat">
+      <h3>Challenges Completed</h3>
+      <div class="big" id="completed">0</div>
+    </div>
+
+  </div>
+
+  <div class="dash-grid" style="margin-top:20px">
+
+    <div class="card">
+      <h2>🔐 1. Phishing Simulation</h2>
+      <div id="phBars"></div>
+      <p>
+        <b>Correct answer: B — Stop, Check, Verify.</b>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>🤖 2. AI Verification</h2>
+      <div id="aiBars"></div>
+      <p>
+        <b>Correct answer: B — Verify source and evidence.</b>
+      </p>
+    </div>
+
+  </div>
+
+  <div class="card full-width" style="margin-top:20px">
+
+    <h2>🛡️ 3. Cyber Safety Check</h2>
+
+    <p>
+      <b>
+        Self-checks completed:
+        <span id="securityCompleted">0</span>
+      </b>
+    </p>
+
+    <div id="securityBars"></div>
+
+    <p>
+      <b>
+        Higher score = more basic security practices reported.
+      </b>
+    </p>
+
+  </div>
+
+</main>
+
+<footer>
+  Presenter dashboard • Live anonymous results • Refreshes automatically
+</footer>
+
+<script>
+
+const socket = io();
+
+function bars(
+  obj,
+  id,
+  labels = {A:'A', B:'B', C:'C'}
+) {
+
+  let total =
+    Object.values(obj).reduce(
+      (a,b) => a + b,
+      0
+    ) || 1;
+
+  document.getElementById(id).innerHTML =
+    Object.keys(labels).map(k => {
+
+      let p =
+        Math.round(
+          obj[k] / total * 100
+        );
+
+      let cls =
+        k === 'B'
+          ? 'correct'
+          : (k === 'A' || k === 'C'
+              ? 'danger'
+              : '');
+
+      return `
+        <div class="barrow">
+
+          <div class="barlabel">
+            <b>${labels[k]}</b>
+            <span>${obj[k]} (${p}%)</span>
+          </div>
+
+          <div class="bar">
+            <div
+              class="fill ${cls}"
+              style="width:${p}%">
+            </div>
+          </div>
+
+        </div>
+      `;
+
+    }).join('');
+}
+
+
+function render(s) {
+
+  document.getElementById('participants').textContent =
+    s.participants;
+
+  document.getElementById('completed').textContent =
+    s.completed;
+
+  document.getElementById('securityCompleted').textContent =
+    s.securityCompleted;
+
+  bars(
+    s.phishing,
+    'phBars'
+  );
+
+  bars(
+    s.ai,
+    'aiBars'
+  );
+
+  bars(
+    s.security,
+    'securityBars',
+    {
+      0:'0%',
+      20:'20%',
+      40:'40%',
+      60:'60%',
+      80:'80%',
+      100:'100%'
+    }
+  );
+}
+
+
+socket.on('state', render);
+
+</script>
+
+</body>
+</html>
