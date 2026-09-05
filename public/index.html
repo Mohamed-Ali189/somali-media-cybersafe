@@ -1,10 +1,11 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Somali Media CyberSafe</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Somali Media CyberSafe Live</title>
+<link rel="stylesheet" href="style.css">
+<script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -14,110 +15,272 @@
     <h1>🛡️ Somali Media CyberSafe</h1>
     <p class="sub">Protecting Journalism, Information & Public Trust</p>
   </div>
-
-  <div class="forum">
-    Strategic Communication Forum 2026
-  </div>
+  <div class="forum">Strategic Communication Forum 2026</div>
 </header>
 
 <main class="container">
 
-  <section id="home">
+<section id="home">
 
-    <div class="hero">
+  <div class="hero">
+    <span class="tag">SAFE • ANONYMOUS • EDUCATIONAL</span>
 
-      <span class="tag">
-        SAFE • ANONYMOUS • EDUCATIONAL
-      </span>
+    <h2>Digital Security Awareness for Somali Journalism</h2>
 
-      <h2>
-        Digital Security Awareness for Somali Journalism
-      </h2>
+    <p>
+      <b>Amniga Dijitaalka iyo Ilaalinta Saxaafadda Soomaaliyeed</b>
+    </p>
 
-      <h3>
-        Amniga Dijitaalka iyo Ilaalinta Saxaafadda Soomaaliyeed
-      </h3>
+    <p>
+      Complete the challenges. Your answers are shown only as anonymous aggregate results on the live dashboard.
+    </p>
+  </div>
 
-      <p>
-        Complete the challenges. Your answers are shown only as anonymous
-        aggregate results on the live presenter dashboard.
-      </p>
+  <div class="grid">
+
+    <button class="module" onclick="show('phishing')">
+      <span>🔐</span>
+      <h3>1. Phishing Simulation</h3>
+      <p>Recognise a realistic phishing-style message.</p>
+    </button>
+
+    <button class="module" onclick="show('ai')">
+      <span>🤖</span>
+      <h3>2. AI Verification</h3>
+      <p>Learn what to verify before sharing information.</p>
+    </button>
+
+    <button class="module" onclick="show('security')">
+      <span>🛡️</span>
+      <h3>3. Cyber Safety Check</h3>
+      <p>Review your basic digital security practices.</p>
+    </button>
+
+  </div>
+
+</section>
+
+
+<section id="phishing" class="hidden">
+
+  <div class="card">
+
+    <button class="back" onclick="show('home')">← Home</button>
+
+    <h2 class="question">
+      🔐 Scenario: A Somali media organisation receives this message
+    </h2>
+
+    <div class="scenario">
+
+      <b>Subject: URGENT — Your Media Page Will Be Disabled</b>
+      <br><br>
+
+      From: support@media-security-alert.example
+
+      <br><br>
+
+      “We received a complaint about your page. Your account will be permanently disabled within 30 minutes. Review your case immediately.”
 
     </div>
 
-    <div class="grid">
+    <h3 class="question">
+      What is the safest first action?
+    </h3>
 
-      <button class="module" onclick="show('phishing')">
-        <span>🔐</span>
-        <h3>1. Phishing Simulation</h3>
-        <p>
-          Recognise a realistic phishing-style message.
-        </p>
+    <div class="options">
+
+      <button class="option" onclick="phish('A')">
+        A. Click the link immediately because the message is urgent
       </button>
 
-      <button class="module" onclick="show('ai')">
-        <span>🤖</span>
-        <h3>2. AI Verification</h3>
-        <p>
-          Learn what to verify before sharing information.
-        </p>
+      <button class="option" onclick="phish('B')">
+        B. Verify the sender and independently check the official platform
       </button>
 
-      <button class="module" onclick="show('security')">
-        <span>🛡️</span>
-        <h3>3. Cyber Safety Check</h3>
-        <p>
-          Review your basic digital security practices.
-        </p>
+      <button class="option" onclick="phish('C')">
+        C. Forward the message to everyone without checking
       </button>
 
     </div>
 
-  </section>
+    <div id="phishResult"></div>
 
-  <section id="phishing" class="challenge" style="display:none">
-    <h2>🔐 Phishing Simulation</h2>
-    <p>
-      Recognise the safest response to this message.
-    </p>
-    <div id="phishingContent"></div>
-  </section>
+  </div>
 
-  <section id="ai" class="challenge" style="display:none">
-    <h2>🤖 AI Verification</h2>
-    <p>
-      Decide what should be verified before sharing information.
-    </p>
-    <div id="aiContent"></div>
-  </section>
+</section>
 
-  <section id="security" class="challenge" style="display:none">
-    <h2>🛡️ Cyber Safety Check</h2>
-    <p>
-      Review your basic digital security practices.
-    </p>
-    <div id="securityContent"></div>
-  </section>
+
+<section id="ai" class="hidden">
+
+  <div class="card">
+
+    <button class="back" onclick="show('home')">← Home</button>
+
+    <h2 class="question">
+      🤖 AI Verification Challenge
+    </h2>
+
+    <div class="scenario">
+      A breaking-news image is spreading rapidly on social media.
+      It looks realistic, but its original source is unclear.
+    </div>
+
+    <h3 class="question">
+      What should a journalist verify before sharing it?
+    </h3>
+
+    <div class="options">
+
+      <button class="option" onclick="ai('A')">
+        A. Share it immediately because many accounts have posted it
+      </button>
+
+      <button class="option" onclick="ai('B')">
+        B. Check the original source, date, context and independent evidence
+      </button>
+
+      <button class="option" onclick="ai('C')">
+        C. Assume a realistic image must be authentic
+      </button>
+
+    </div>
+
+    <div id="aiResult"></div>
+
+  </div>
+
+</section>
+
+
+<section id="security" class="hidden">
+
+  <div class="card">
+
+    <button class="back" onclick="show('home')">← Home</button>
+
+    <h2 class="question">
+      🛡️ Cyber Safety Check
+    </h2>
+
+    <label class="check">
+      <input type="checkbox">
+      I use unique, strong passwords /
+      Waxaan isticmaalaa passwords adag oo kala duwan
+    </label>
+
+    <label class="check">
+      <input type="checkbox">
+      I use Multi-Factor Authentication (MFA) /
+      Waxaan isticmaalaa MFA
+    </label>
+
+    <label class="check">
+      <input type="checkbox">
+      I check suspicious links before opening /
+      Waxaan hubiyaa links-ka shakiga leh
+    </label>
+
+    <label class="check">
+      <input type="checkbox">
+      I update my phone and computer regularly /
+      Waxaan update-gareeyaa qalabkayga
+    </label>
+
+    <label class="check">
+      <input type="checkbox">
+      I keep important information backed up /
+      Waxaan haystaa backup
+    </label>
+
+    <button class="primary" onclick="score()">
+      Calculate My Awareness Score
+    </button>
+
+    <div id="scoreResult"></div>
+
+  </div>
+
+</section>
 
 </main>
 
 <footer>
-  Anonymous educational demonstration •
-  No passwords, photos or personal information collected
+  Anonymous educational demonstration • No passwords, photos or personal information collected
 </footer>
+
 
 <script>
 
-function show(section) {
+const socket = io();
 
-  document.getElementById("home").style.display = "none";
+socket.emit('joinParticipant');
 
-  document.getElementById("phishing").style.display = "none";
-  document.getElementById("ai").style.display = "none";
-  document.getElementById("security").style.display = "none";
 
-  document.getElementById(section).style.display = "block";
+function show(id) {
 
+  ['home','phishing','ai','security']
+    .forEach(x =>
+      document.getElementById(x).classList.add('hidden')
+    );
+
+  document.getElementById(id).classList.remove('hidden');
+
+  scrollTo(0,0);
+}
+
+
+function phish(c) {
+
+  socket.emit('answer', {
+    question: 'phishing',
+    choice: c
+  });
+
+  document.getElementById('phishResult').innerHTML =
+    c === 'B'
+
+    ? '<div class="result good"><h3>✅ Correct / Sax</h3><p><b>Stop. Check. Verify.</b> Do not follow unexpected links. Verify independently through the official platform.</p></div>'
+
+    : '<div class="result warn"><h3>⚠️ High Risk / Khatar Sare</h3><p>Urgency is a common phishing technique. Check the sender and official domain first.</p></div>';
+}
+
+
+function ai(c) {
+
+  socket.emit('answer', {
+    question: 'ai',
+    choice: c
+  });
+
+  document.getElementById('aiResult').innerHTML =
+    c === 'B'
+
+    ? '<div class="result good"><h3>✅ Correct / Sax</h3><p>Verify source, date, context and independent evidence before publishing.</p></div>'
+
+    : '<div class="result warn"><h3>⚠️ Verification Required</h3><p>Realistic appearance and popularity do not prove authenticity.</p></div>';
+}
+
+
+function score() {
+
+  let n =
+    document.querySelectorAll('#security input:checked').length;
+
+  let p = n * 20;
+
+  socket.emit('securityScore', {
+    score: p
+  });
+
+  socket.emit('complete');
+
+  document.getElementById('scoreResult').innerHTML =
+    '<div class="result good">' +
+    '<h3>Your Awareness Score</h3>' +
+    '<div class="score">' + p + '%</div>' +
+    '<p>Educational self-check only. Only anonymous aggregate results are counted.</p>' +
+    '</div>';
 }
 
 </script>
