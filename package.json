@@ -1,0 +1,12 @@
+{
+  "name": "somali-media-cybersafe-live",
+  "version": "1.0.0",
+  "description": "Anonymous live cybersecurity awareness dashboard",
+  "main": "server.js",
+  "scripts": {"start": "node server.js"},
+  "dependencies": {
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.1"
+  }
+}

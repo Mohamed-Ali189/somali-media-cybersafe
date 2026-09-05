@@ -1,0 +1,69 @@
+# SOMALI MEDIA CYBERSAFE — LIVE FORUM VERSION
+
+## What this version does
+Participants join anonymously using a QR code or local address.
+Their answers update the LIVE DASHBOARD in real time.
+
+It does NOT collect:
+- passwords
+- names
+- photos
+- camera data
+- location
+
+## BEFORE THE FORUM
+Install Node.js LTS from the official Node.js website.
+
+## RUN THE PROJECT
+1. Extract the ZIP.
+2. Open the extracted folder.
+3. Right-click inside the folder and choose "Open in Terminal".
+4. Run:
+
+   npm install
+
+5. Then run:
+
+   npm start
+
+6. Open:
+   http://localhost:3000/dashboard.html
+
+This is YOUR presenter dashboard.
+
+## PARTICIPANTS
+Your laptop and participants' phones must be connected to the SAME Wi-Fi.
+
+After running npm start, the terminal will show something like:
+
+http://192.168.1.50:3000
+
+Participants open that address on their phones.
+
+For the QR code:
+Open this in your browser (replace the IP with your own):
+http://localhost:3000/api/qr
+
+Or:
+http://YOUR-LAPTOP-IP:3000/api/qr?host=YOUR-LAPTOP-IP
+
+The page returns a QR image and the participant URL.
+
+## IMPORTANT FOR WINDOWS FIREWALL
+If Windows asks whether Node.js can communicate on networks,
+allow it on PRIVATE networks.
+
+## DASHBOARD
+Open on your presentation screen:
+http://localhost:3000/dashboard.html
+
+## DEMO
+Participant page:
+http://YOUR-LAPTOP-IP:3000/
+
+Dashboard:
+http://YOUR-LAPTOP-IP:3000/dashboard.html
+
+## NOTE
+This is designed for a controlled forum demonstration on a trusted network.
+For a public internet deployment, use proper HTTPS hosting and a production-grade backend.
