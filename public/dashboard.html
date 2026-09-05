@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Live Forum Dashboard</title><link rel="stylesheet" href="style.css"><script src="/socket.io/socket.io.js"></script></head>
+<body><header><div><h1>📊 Somali Media CyberSafe — Live Results</h1><p class="sub">Anonymous aggregate data only</p></div><div class="forum">Strategic Communication Forum 2026</div></header>
+<main class="container">
+<div class="dash-grid">
+<div class="stat"><h3>Participants Connected</h3><div class="big" id="participants">0</div></div>
+<div class="stat"><h3>Challenges Completed</h3><div class="big" id="completed">0</div></div>
+</div>
+<div class="dash-grid" style="margin-top:20px">
+<div class="card"><h2>🔐 Phishing Decisions</h2><div id="phBars"></div><p><b>Correct answer: B — Stop, Check, Verify.</b></p></div>
+<div class="card"><h2>🤖 AI Verification Decisions</h2><div id="aiBars"></div><p><b>Correct answer: B — Verify source and evidence.</b></p></div>
+</div>
+</main><footer>Live anonymous results • Refreshes automatically</footer>
+<script>
+const socket=io();
+function bars(obj,id){let total=Object.values(obj).reduce((a,b)=>a+b,0)||1;let labels={A:'A',B:'B',C:'C'};document.getElementById(id).innerHTML=['A','B','C'].map(k=>{let p=Math.round(obj[k]/total*100);let cls=k==='B'?'correct':(k==='A'||k==='C'?'danger':'');return `<div class="barrow"><div class="barlabel"><b>${labels[k]}</b><span>${obj[k]} (${p}%)</span></div><div class="bar"><div class="fill ${cls}" style="width:${p}%"></div></div></div>`}).join('')}
+function render(s){document.getElementById('participants').textContent=s.participants;document.getElementById('completed').textContent=s.completed;bars(s.phishing,'phBars');bars(s.ai,'aiBars')}
+socket.on('state',render);
+</script></body></html>
